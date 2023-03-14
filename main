@@ -1,0 +1,38 @@
+import requests
+
+# 在OpenWeatherMap网站上注册并获取您的API密钥
+api_key = "YOUR_API_KEY_HERE"
+
+# 您所在的位置的经纬度
+lat = "YOUR_LATITUDE_HERE"
+lon = "YOUR_LONGITUDE_HERE"
+
+# API 请求URL
+url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}"
+
+# 发送API请求并获取JSON响应
+response = requests.get(url)
+data = response.json()
+
+# 解析JSON数据以获取当前天气信息
+current_temp = round(data["main"]["temp"] - 273.15, 2)
+current_desc = data["weather"][0]["description"].title()
+
+# 打印当前天气信息
+print("Current weather:")
+print(f"Temperature: {current_temp}°C")
+print(f"Description: {current_desc}\n")
+
+# 获取未来一天的天气信息
+url = f"http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}"
+response = requests.get(url)
+data = response.json()
+
+# 解析JSON数据以获取未来一天的天气信息
+tomorrow_temp = round(data["list"][8]["main"]["temp"] - 273.15, 2)
+tomorrow_desc = data["list"][8]["weather"][0]["description"].title()
+
+# 打印未来一天的天气信息
+print("Tomorrow's weather:")
+print(f"Temperature: {tomorrow_temp}°C")
+print(f"Description: {tomorrow_desc}")
